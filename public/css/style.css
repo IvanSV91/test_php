@@ -13,24 +13,30 @@ header {
 	color: rgb(182, 180, 180);
 	}
     
-.main form_box {
-    position: absolute;
-    left: 40%;
-	width: 50%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    clear:both;
-    text-align:right;
-    padding-right: 10px;
+table {
+    width: 300px; /* Ширина таблицы */
+    border: 1px solid green; /* Рамка вокруг таблицы */
+    margin: auto; /* Выравниваем таблицу по центру окна  */
+   }
+.div_table {
+    margin: auto; /* Выравниваем таблицу по центру окна  */
+    border: 1px solid green; /* Рамка вокруг таблицы */
 }
+.div_error{
+    text-align: center; /* Выравниваем таблицу по центру окна  */
+}
+
+.table_td_name {
+	border: 1px solid black;
+	width: 30%;
+}
+
 .form_box {
 	position: absolute;
-	left: 40%;
+	left: 35%;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    clear:both;
    	text-align:right;    
 	padding-right: 10px;	
 }
