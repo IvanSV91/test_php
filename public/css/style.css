@@ -14,16 +14,14 @@ header {
 	}
     
 table {
-    width: 300px; /* Ширина таблицы */
-    border: 1px solid green; /* Рамка вокруг таблицы */
-    margin: auto; /* Выравниваем таблицу по центру окна  */
+    width: 300px;
+    margin: auto;
    }
 .div_table {
-    margin: auto; /* Выравниваем таблицу по центру окна  */
-    border: 1px solid green; /* Рамка вокруг таблицы */
+    margin: auto;
 }
 .div_error{
-    text-align: center; /* Выравниваем таблицу по центру окна  */
+    text-align: center; 
 }
 
 .table_td_name {

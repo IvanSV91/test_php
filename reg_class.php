@@ -4,6 +4,7 @@ class UserRegistration {
 	public $name;
 	public $login;
 	public $password;
+	public $password_check;
 
 	public $nameErr = "";
 	public $loginErr = "";
@@ -14,8 +15,25 @@ class UserRegistration {
 			$this->name = $this->sanitizeInput($data["user_name"]);
 			$this->login = $this->sanitizeInput($data["login"]);
 			$this->password = $data["password"];
+			$this->password_check = $data["password_check"];
 			$this->validate();
 		}
+	}
+
+	public function enterErrors(){
+		if(!empty($this->nameErr))
+    	{
+        	echo "<p style=\"color: red\">" . $this->nameErr ." for Name</p>";
+    	}
+    	if(!empty($this->loginErr))
+    	{
+        	echo "<p style=\"color: red\">" . $this->loginErr ." for Login</p>";
+    	}
+    	if(!empty($this->passErr))
+    	{
+        	echo "<p style=\"color: red\">" . $this->passErr ."</p>";
+    	}
+
 	}
 
 	private function sanitizeInput($data) {
@@ -66,10 +84,15 @@ class UserRegistration {
 	}
 		
 	private function validatePassword() {
-		if(empty($this->password)) {
-			$this->passErr = "Enter password";
+		if(empty($this->password) || empty($this->password_check)) {
+			$this->passErr = "Create a password and enter it in both fields";
 			return false;
-		} elseif ($this->validatePasswordComplexity($this->password, 8, 32, $this->passErr)) {
+		}
+		elseif(strcmp($this->password, $this->password_check)){
+			$this->passErr = "The passwords entered in both passwords fields should match";
+			return false;
+		}
+		elseif ($this->validatePasswordComplexity($this->password, 8, 32, $this->passErr)) {
 			return false;
 		}
 		return true;	
@@ -94,12 +117,12 @@ class UserRegistration {
 		$length = strlen($data);
 		
 		if($length < $min_count) {
-			$error = "A minimum of " . $min_count . " is required";
+			$error = "A minimum of " . $min_count . " symbols is required";
             return false;
         }
 
        if ($length > $max_count) {
-           $error = "A maximum of " . $max_count . " is required.";
+           $error = "A maximum of " . $max_count . " symbols is required.";
        	   return false;
         }
 
