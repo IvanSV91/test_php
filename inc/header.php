@@ -5,8 +5,8 @@
 
 	$urls = array (
 		array("url" => "/reg.php", "name" => "Registration"),
-		array("url" => "/reg.php", "name" => "Enter"),
-		array("url" => "/reg.php", "name" => "Portfolio")
+		array("url" => "/auth.php", "name" => "Enter"),
+		array("url" => "/profile.php", "name" => "Portfolio")
 	);
 
 	$i = 0;

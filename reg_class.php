@@ -3,17 +3,20 @@
 class UserRegistration {
 	public $name;
 	public $login;
+	public $email;
 	public $password;
 	public $password_check;
 
 	public $nameErr = "";
 	public $loginErr = "";
+	public $emailErr = "";
 	public $passErr = "";
 
 	public function __construct($data) {
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
 			$this->name = $this->sanitizeInput($data["user_name"]);
 			$this->login = $this->sanitizeInput($data["login"]);
+			$this->email = $data["email"];
 			$this->password = $data["password"];
 			$this->password_check = $data["password_check"];
 			$this->validate();
@@ -23,12 +26,16 @@ class UserRegistration {
 	public function enterErrors(){
 		if(!empty($this->nameErr))
     	{
-        	echo "<p style=\"color: red\">" . $this->nameErr ." for Name</p>";
+        	echo "<p style=\"color: red\">" . $this->nameErr ."</p>";
     	}
     	if(!empty($this->loginErr))
     	{
-        	echo "<p style=\"color: red\">" . $this->loginErr ." for Login</p>";
-    	}
+        	echo "<p style=\"color: red\">" . $this->loginErr . "</p>";
+		}
+		if(!empty($this->emailErr))
+		{
+				echo "<p style=\"color: red\">" . $this->emailErr ." </p>";
+		}
     	if(!empty($this->passErr))
     	{
         	echo "<p style=\"color: red\">" . $this->passErr ."</p>";
@@ -36,13 +43,14 @@ class UserRegistration {
 
 	}
 
-	private function sanitizeInput($data) {
+	protected function sanitizeInput($data) {
 		return htmlspecialchars(stripslashes(trim($data)));
 	}
 
 	private function validate() {
 		$this->validateName();
 		$this->validateLogin();
+		$this->validateEmail();
 		$this->validatePassword();
 
 		if($this->isValid()) {
@@ -82,6 +90,21 @@ class UserRegistration {
 		}
 		return true;
 	}
+
+
+	protected function validateEmail() {
+        if (empty($this->email)) {
+            $this->emailErr = "Enter your email";
+            return false;
+        } else {
+            if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+                $this->emailErr = "Invalid email format";
+                return false;
+            }
+        }
+        return true;
+    }
+
 		
 	private function validatePassword() {
 		if(empty($this->password) || empty($this->password_check)) {
@@ -130,11 +153,12 @@ class UserRegistration {
    }
 
 	private function isValid() {
-			return empty($this->nameErr) && empty($this->loginErr) && empty($this->passErr);
+			return empty($this->nameErr) && empty($this->loginErr) && empty($this->passErr) && empty($this->emailErr);
 	}
 
 	private function registerUser() {
-		mysqli_cli($this->name, $this->login, $this->password);
+		mysqli_cli($this->name, $this->login, $this->password, $this->email);
+		header("Location: ./auth.php");
 	}
 }
 

@@ -25,7 +25,7 @@ table {
 }
 
 .table_td_name {
-	border: 1px solid black;
+	border: none;
 	width: 30%;
 }
 
