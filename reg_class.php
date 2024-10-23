@@ -157,7 +157,8 @@ class UserRegistration {
 	}
 
 	private function registerUser() {
-		mysqli_cli($this->name, $this->login, $this->password, $this->email);
+		$dbReg = new UserDatabase("localhost", "root", "qwerty", "reg_users");
+		$dbReg->registerUser($this->name, $this->login, $this->password, $this->email);
 		header("Location: ./auth.php");
 	}
 }

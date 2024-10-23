@@ -16,9 +16,20 @@ class UserAuth extends UserRegistration {
 	}
 
 	private function login() {
-		mysqli_cli_auth($this->email, $this->password);
+		//if(mysqli_cli_auth($this->email, $this->password))
+	
+		$authUser = new UserDatabase("localhost", "root", "qwerty", "reg_users");
+		if($authUser->userAuth($this->email, $this->password))
+		{	
+			setcookie("userEmail", $this->email, time() + 180, "/");
+			header("Location: ./profile.php");
+			exit();
+		}	
+		else{
+			echo "Invalid Email or Pasword";
+			return false;
+		}
 	}
-
 	private function validate(){
 		$this->validatePassword();
 		$this->validateEmail();

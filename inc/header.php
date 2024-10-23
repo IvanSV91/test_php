@@ -1,21 +1,38 @@
 <header>
-<table align = "center" bordercolor = "none">
-<tr>
 <?php
 
-	$urls = array (
-		array("url" => "/reg.php", "name" => "Registration"),
-		array("url" => "/auth.php", "name" => "Enter"),
-		array("url" => "/profile.php", "name" => "Portfolio")
-	);
-
-	$i = 0;
-	while($i < count($urls))
+if(isset($_POST['profile'])) {
+	if($_COOKIE["userEmail"] == "")
 	{
-		echo "<td style=\"padding-right: 30px\"><a href='".$urls[$i][url]."'>".$urls[$i][name]."</a></td>";
-		$i++;
+    	header("Location: ./auth.php");
 	}
+	else{	
+    	header("Location: ./profile.php");
+	}
+}
+if(isset($_POST['registration'])) {
+    if($_COOKIE["userEmail"] == "") 
+    {
+        header("Location: ./reg.php");
+    }
+	else{
+		echo "<script>alert(\"you already have an account\")</script>";	
+    }
+} 	
+	echo "<table class=\"menu\";><tr>";
+	echo "<td style=\"padding-right: 30px\"><a href=\"index.php\">Main</a></td>";
+	
+	echo "<td>
+        <form method=\"post\">
+        <button class=\"menu_button\" type=\"submit\" name=\"registration\">Registration</button>
+        </form>
+    </td>";
 
+	echo "<td>
+		<form method=\"post\">
+        <button class=\"menu_button\" type=\"submit\" name=\"profile\">Profile</button>
+    	</form>
+	</td>";
 ?>
 </tr>
 </table>

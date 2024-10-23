@@ -6,7 +6,21 @@ header {
     border-width: 1px;
     padding: 10px;
   }
-  
+ 
+.menu {
+    width: 300px;
+    margin: auto;
+}
+.menu_button {
+	border: none;
+ 	color: none;
+	background-color: transparent;
+	text-decoration: none;
+    font-size: 14px;
+    color: rgb(182, 180, 180);
+	cursor: pointer;
+}
+
  a {
 	text-decoration: none;
 	font-size: 14px;
