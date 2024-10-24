@@ -1,3 +1,20 @@
+<?php 
+session_start();
+include "./mysql_cli.php";
+	if(isset($_COOKIE["userEmail"])) {
+		print_r($_COOKIE["userEmail"]);
+		$email = $_COOKIE["userEmail"];
+
+	$user = new UserDatabase("localhost", "root", "qwerty", "reg_users");
+	$user->setUserSession($email);
+	echo "<br>session start correctly<br>";
+	echo $_SESSION['user']['name'];
+	echo $_SESSION['user']['login'];
+	echo $_SESSION['user']['email'];
+	echo $_SESSION['user']['password'];
+	}
+
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,7 +24,7 @@
         <link rel="stylesheet" href="public/css/style.css">
         <title>edit profile</title>
     </head>
-    <?php include "inc/header.php"; ?>
+	<?php include "inc/header.php"; ?>
 	<body>
 		<?php
 			if($_COOKIE["userEmail"] == "")
