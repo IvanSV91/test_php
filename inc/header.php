@@ -2,7 +2,7 @@
 <?php
 
 if(isset($_POST['profile'])) {
-	if($_COOKIE["userEmail"] == "")
+	if($_COOKIE["user_id"] == "")
 	{
     	header("Location: ./auth.php");
 	}
@@ -11,7 +11,7 @@ if(isset($_POST['profile'])) {
 	}
 }
 if(isset($_POST['registration'])) {
-    if($_COOKIE["userEmail"] == "") 
+    if($_COOKIE["user_id"] == "") 
     {
         header("Location: ./reg.php");
     }

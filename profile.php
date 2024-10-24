@@ -11,12 +11,12 @@
     <body>
 <h1>Profile</h1>
 <?php
-	echo $_COOKIE["userEmail"];
-	if(isset($_POST['exit'])) {
-    setcookie("userEmail", $_COOKIE["userEmail"], time() - 180, "/");
+	echo "your id is:" . $_COOKIE["user_id"];
+	if(isset($_POST["exit"])) {
+    setcookie("user_id", $_COOKIE["user_id"], time() - 180 * 10, "/");
 	header("Location: ./index.php");
 	}
-	if(isset($_POST['edit'])) {
+	if(isset($_POST["edit"])) {
     	header("Location: ./edit.php");
    	}
 

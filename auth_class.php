@@ -16,12 +16,12 @@ class UserAuth extends UserRegistration {
 	}
 
 	private function login() {
-		//if(mysqli_cli_auth($this->email, $this->password))
 	
-		$authUser = new UserDatabase("localhost", "root", "qwerty", "reg_users");
-		if($authUser->userAuth($this->email, $this->password))
+		$authenticate = new UserDatabase("localhost", "root", "qwerty", "reg_users");
+		$user_id = $authenticate->userAuth($this->email, $this->password);
+		if($user_id)
 		{	
-			setcookie("userEmail", $this->email, time() + 180, "/");
+			setcookie("user_id", $user_id, time() + 1800, "/");
 			header("Location: ./profile.php");
 			exit();
 		}	

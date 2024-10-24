@@ -1,18 +1,45 @@
 <?php 
 session_start();
 include "./mysql_cli.php";
-	if(isset($_COOKIE["userEmail"])) {
-		print_r($_COOKIE["userEmail"]);
-		$email = $_COOKIE["userEmail"];
-
+	if(isset($_COOKIE["user_id"])) {
+		print_r($_COOKIE["user_id"]);
+		$user_id = $_COOKIE["user_id"];
+	}
 	$user = new UserDatabase("localhost", "root", "qwerty", "reg_users");
-	$user->setUserSession($email);
+	$user->setUserSession($user_id);
 	echo "<br>session start correctly<br>";
+	echo $_SESSION['user']['user_id'];
 	echo $_SESSION['user']['name'];
 	echo $_SESSION['user']['login'];
 	echo $_SESSION['user']['email'];
 	echo $_SESSION['user']['password'];
+	
+class editUserProfile {
+
+	public $oldData;
+	public $newData;
+	public $keys = ["user_id", "login", "password"];
+
+	public function __construct($data){
+		if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+			for($i = 0; $i < count($this->keys); $i++)
+			{
+				if(!empty($data[$this->keys[$i]]))
+				{
+					$this->oldData = $_SESSION['user'][$this->keys[$i]];
+					$this->newData = $data[$this->keys[$i]];
+					echo $this->keys[$i];		
+					echo $this->oldData;
+					echo $this->newData;
+				}
+			}	
+		}		
 	}
+
+}
+
+	$check = new editUserProfile($_POST);
 
 ?>
 <!DOCTYPE html>
@@ -27,7 +54,7 @@ include "./mysql_cli.php";
 	<?php include "inc/header.php"; ?>
 	<body>
 		<?php
-			if($_COOKIE["userEmail"] == "")
+			if($_COOKIE["user_id"] == "")
     		{
         		header("Location: ./login.php");
 			}
@@ -48,8 +75,8 @@ include "./mysql_cli.php";
 			<td><button type="submit">change</button></td>
 			</tr>
 			<tr>
-            <td class="table_td_name"><label for="password">New Login:</label></td>
-            <td><input type="password" name="password" id="password"></td>
+            <td class="table_td_name"><label for="login">New Login:</label></td>
+            <td><input type="text" name="login" id="login"></td>
 			<td><button type="submit">change</button></td>   
 			</tr>
 <tr>

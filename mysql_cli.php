@@ -28,34 +28,37 @@ class UserDatabase {
 	}
 
 	public function userAuth($email, $password) {
-		$sql_q = "SELECT email, password from users where email='$email' and password='$password'";
+		$sql_q = "SELECT email, password, user_id from users where email='$email' and password='$password'";
 
     	$result = $this->connection->query($sql_q);
 
     	if ($result->num_rows > 0) {
         	$row = $result->fetch_assoc();
-            return true;
+            return $row['user_id'];
 		}else{
         	echo "Invalid Email or Password";
        		return false;
     	}
 	}    
 
-	
-	public function setUserSession($email) {
-	
-		$sqlQ = "SELECT * FROM users WHERE email='$email'";
 
+	public function setUserSession($user_id) {
+	
+		$sqlQ = "SELECT * FROM users WHERE user_id='$user_id'";
+	
 		$result = $this->connection->query($sqlQ);
 		
 		if($result->num_rows > 0) {
 			$userData = $result->fetch_assoc();
 			$_SESSION['user'] = $userData;
-			echo "session_start";
 		}else {
 				echo "user did not found";
 		}
 	}
+
+	
+	//public function editUserProfile($oldData, $newData, $type_post)
+
 
 }
 ?>
