@@ -18,7 +18,8 @@ class editUserProfile {
 
 	public $oldData;
 	public $newData;
-	public $keys = ["user_id", "login", "password"];
+	public $keys = ["login", "password", "email"];
+	public $key;	
 
 	public function __construct($data){
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -29,6 +30,8 @@ class editUserProfile {
 				{
 					$this->oldData = $_SESSION['user'][$this->keys[$i]];
 					$this->newData = $data[$this->keys[$i]];
+					$this->key = $this->keys[$i];
+					echo "<br> CHECK: " .$this->key . "<br>";
 					echo $this->keys[$i];		
 					echo $this->oldData;
 					echo $this->newData;
@@ -37,10 +40,18 @@ class editUserProfile {
 		}		
 	}
 
+	public function check_sql() {
+
+		$check_sql = new UserDatabase("localhost", "root", "qwerty", "reg_users");
+		$check_sql->editUserProfileSql($this->oldData, $this->newData, $this->key);	
+	}
 }
 
-	$check = new editUserProfile($_POST);
-
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		$check = new editUserProfile($_POST);
+		$ckeck_db = $check->check_sql();
+		//header("Location: ./edit.php");
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -78,11 +89,6 @@ class editUserProfile {
             <td class="table_td_name"><label for="login">New Login:</label></td>
             <td><input type="text" name="login" id="login"></td>
 			<td><button type="submit">change</button></td>   
-			</tr>
-<tr>
-            <td class="table_td_name"><label for="password">New Phone number</label></td>
-            <td><input type="password" name="password" id="password"></td>
-			<td><button type="submit">change</button></td>
 			</tr>
         </table>
     </form>

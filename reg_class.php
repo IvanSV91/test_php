@@ -6,6 +6,7 @@ class UserRegistration {
 	public $email;
 	public $password;
 	public $password_check;
+	public $hashPassword;
 
 	public $nameErr = "";
 	public $loginErr = "";
@@ -158,7 +159,8 @@ class UserRegistration {
 
 	private function registerUser() {
 		$dbReg = new UserDatabase("localhost", "root", "qwerty", "reg_users");
-		$dbReg->registerUser($this->name, $this->login, $this->password, $this->email);
+		$this->hashPassword = password_hash($this->password, PASSWORD_DEFAULT);
+		$dbReg->registerUser($this->name, $this->login, $this->hashPassword, $this->email);
 		header("Location: ./auth.php");
 	}
 }
