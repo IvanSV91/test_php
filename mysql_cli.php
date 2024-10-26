@@ -14,17 +14,24 @@ class UserDatabase {
 	}
 
 	public function registerUser($name, $login, $hashPassword, $email) {
-		$sql_q = "INSERT INTO `users` (`name`, `login`, `password`, `email`) Values ('$name', '$login', '$hashPassword', '$email')";
+		$sql = "INSERT INTO `users` (`name`, `login`, `password`, `email`) Values (?, ?, ?, ?)";
 
-     	if($this->connection->query($sql_q) === TRUE)
-        {
-            echo "record created";
-        }
-        else
-        {
-            echo "Error: " .$sql_q . "<br>" . $this->connection->error;
-        }
-
+		if($stmt = $this->connection->prepare($sql))
+		{
+			$stmt->bind_param("ssss", $name, $login, $hashPassword, $email);
+			
+			if(!$stmt->execute()){
+				echo "something wrong";
+				$stmt->close();
+				return false;
+			}
+			$stmt->close();
+			return true;
+		}else {
+			echo "something wrong";
+			$stmt->close();
+			return false;	
+		}
 	}
 
 	public function userAuth($email, $password) {
@@ -40,10 +47,11 @@ class UserDatabase {
 			$row = $result->fetch_assoc();
 			$hashPassword = $row['password'];
 				if(password_verify($password, $hashPassword)) {
-            	return $row['user_id'];
+				$stmt->close();		
+				return $row['user_id'];
+				
 				}
 			}
-        echo "Invalid Email or Password";
 		$stmt->close();
 		return false;
 	}    
@@ -51,18 +59,36 @@ class UserDatabase {
 
 	public function setUserSession($user_id) {
 	
-		$sqlQ = "SELECT * FROM users WHERE user_id='$user_id'";
-	
-		$result = $this->connection->query($sqlQ);
+		$sql = "SELECT * FROM users WHERE user_id=?";
+		if($stmt = $this->connection->prepare($sql)) {
+			$stmt->bind_param("s", $user_id);
+			if(!$stmt->execute()){
+				echo "Something wrong:";
+				$stmt->close();
+				return false;
+			}
 		
-		if($result->num_rows > 0) {
-			$userData = $result->fetch_assoc();
-			$_SESSION['user'] = $userData;
+
+			$result = $stmt->get_result();
+
+			if($result->num_rows > 0) {
+				$user_data = $result->fetch_assoc();
+				$_SESSION["user"] = $user_data;
+			
+				$stmt->close();
+				return true;
+			}
+			else {
+				echo "something went wrong";
+				$stmt->close();
+				return false;
+			}
 		}else {
-				echo "user did not found";
+			echo "smth went wrong";
+			$stmt->close();
+			return false;
 		}
 	}
-
 	
 	public function editUserProfileSql($oldData, $newData, $key)
 	{
@@ -76,6 +102,25 @@ class UserDatabase {
    			}
 	
 	}
+
+    public function editUserPassword($oldData, $hash, $key)
+	{
+		if($key == "password"){	
+			$hash = password_hash($hash, PASSWORD_DEFAULT);
+		}
+
+        $sql = "UPDATE users SET `$key`=? where `$key`=?";
+		$stmt = $this->connection->prepare($sql);
+        $stmt->bind_param('ss', $hash, $oldData);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+			echo "working";
+		$stmt->close();
+    }
+
+
 
 
 }

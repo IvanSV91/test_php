@@ -3,9 +3,9 @@
 include "./reg_class.php";
 
 class UserAuth extends UserRegistration {
-
-	public $passErr = "";
 	
+	public $loginErr;
+
 	public function __construct($data) {
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
 			$this->email = $data["email"];
@@ -26,16 +26,16 @@ class UserAuth extends UserRegistration {
 			exit();
 		}	
 		else{
-			echo "Invalid Email or Pasword";
+			$this->loginErr =  "Invalid Email or Pasword";
 			return false;
 		}
 	}
-	private function validate(){
+	protected function validate(){
 		$this->validatePassword();
 		$this->validateEmail();
 	}
 	
-	private function validatePassword(){
+	protected function validatePassword(){
 		if(empty(trim($this->password)))
 		{	
 			$this->passErr = "Enter password";

@@ -76,12 +76,15 @@ class UserRegistration {
 		return true;
 	}
 	
-	private function validateLogin() {
+	protected function validateLogin() {
+
+		echo "function ValidateLogin handle $this->login <br>";
+		
 		if(empty($this->login)) {
 			$this->loginErr = "Enter your login";
 			return false;
 		} else {
-				if ($this->strlenCheck($this->login, 3, 32, $this->loginErr)) {	
+				if (!$this->strlenCheck($this->login, 3, 32, $this->loginErr)) {	
 						return false;
 				}
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $this->login)) {
@@ -107,7 +110,7 @@ class UserRegistration {
     }
 
 		
-	private function validatePassword() {
+	protected function validatePassword() {
 		if(empty($this->password) || empty($this->password_check)) {
 			$this->passErr = "Create a password and enter it in both fields";
 			return false;
@@ -116,7 +119,7 @@ class UserRegistration {
 			$this->passErr = "The passwords entered in both passwords fields should match";
 			return false;
 		}
-		elseif ($this->validatePasswordComplexity($this->password, 8, 32, $this->passErr)) {
+		elseif (!$this->validatePasswordComplexity($this->password, 8, 32, $this->passErr)) {
 			return false;
 		}
 		return true;	

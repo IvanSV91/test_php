@@ -10,7 +10,7 @@
 
 <body>
 	<?php include "inc/header.php"; ?>
-	<?php include "./mysql_cli.php";?>
+	<?php include "./mysql_cli.php";?> 
 	<?php include "./auth_class.php"; ?>
 	<?php $auth = new UserAuth($_POST); ?>
 	<div class="div_table">
@@ -34,7 +34,8 @@
 	<div>
 		<?php
 			echo $auth->enterErrors();
-		 ?>
+			//echo $auth->loginErr;
+		?>
 	</div>
 </body>
 </html>
