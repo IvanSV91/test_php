@@ -95,11 +95,7 @@
 		private function editUserData() {
 	
 			$editData = new UserDatabase("localhost", "root", "qwerty", "reg_users");
-			if($this->key == "password"){
-					$editData->editUserPassword($this->oldData, $this->newData, $this->key);
-					return;
-			}
-			$editData->editUserProfileSql($this->oldData, $this->newData, $this->key);	
+			$editData->editUserDatadb($this->oldData, $this->newData, $this->key);
 		}
 	}
 

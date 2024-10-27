@@ -13,12 +13,12 @@ class UserDatabase {
 		$this->connection->close();
 	}
 
-	public function registerUser($name, $login, $hashPassword, $email) {
-		$sql = "INSERT INTO `users` (`name`, `login`, `password`, `email`) Values (?, ?, ?, ?)";
+	public function registerUser($name, $login, $hashPassword, $email, $phone) {
+		$sql = "INSERT INTO `users` (`name`, `login`, `password`, `email`, `phone`) Values (?, ?, ?, ?, ?)";
 
 		if($stmt = $this->connection->prepare($sql))
 		{
-			$stmt->bind_param("ssss", $name, $login, $hashPassword, $email);
+			$stmt->bind_param("sssss", $name, $login, $hashPassword, $email, $phone);
 			
 			if(!$stmt->execute()){
 				echo "something wrong";
@@ -34,13 +34,12 @@ class UserDatabase {
 		}
 	}
 
-	public function userAuth($email, $password) {
-		$sql = "SELECT password, user_id FROM users WHERE email = ?";
+	public function userAuth($email, $phone, $password) {
+		$sql = "SELECT password, user_id FROM users WHERE email = ? OR phone = ?";
 	
 		$stmt = $this->connection->prepare($sql);
-		$stmt->bind_param('s', $email);
+		$stmt->bind_param('ss', $email, $phone);
 		$stmt->execute();
-
     	$result = $stmt->get_result();
 
     	if ($result->num_rows > 0) {
@@ -49,9 +48,13 @@ class UserDatabase {
 				if(password_verify($password, $hashPassword)) {
 				$stmt->close();		
 				return $row['user_id'];
-				
 				}
-			}
+		}else{
+				$stmt->close();
+				return false;
+		}
+		
+
 		$stmt->close();
 		return false;
 	}    
@@ -90,20 +93,20 @@ class UserDatabase {
 		}
 	}
 	
-	public function editUserProfileSql($oldData, $newData, $key)
-	{
-		$sql = "UPDATE users SET `$key`='$newData' where `$key` ='$oldData'";
+	//public function editUserProfileSql($oldData, $newData, $key)
+	//{
+	//	$sql = "UPDATE users SET `$key`='$newData' where `$key` ='$oldData'";
 		
-		if($this->connection->query($sql) === TRUE)
-        {
-              echo "record created";
-        } else {
-             echo "Error: " .$sql . "<br>" . $this->connection->error;   
-   			}
+	//	if($this->connection->query($sql) === TRUE)
+      //  {
+        //      echo "record created";
+        //} else {
+          //   echo "Error: " .$sql . "<br>" . $this->connection->error;   
+   			//}
 	
-	}
+//	}
 
-    public function editUserPassword($oldData, $hash, $key)
+    public function editUserDatadb($oldData, $hash, $key)
 	{
 		if($key == "password"){	
 			$hash = password_hash($hash, PASSWORD_DEFAULT);

@@ -10,7 +10,7 @@
 	
 	$user = new UserDatabase("localhost", "root", "qwerty", "reg_users");
 	$user->setUserSession($user_id);
-	echo "<br>session start correctly<br>";
+	//echo "<br>session start correctly<br>";
 	//echo $_SESSION['user']['user_id'];
 	//echo $_SESSION['user']['name'];
 	//echo $_SESSION['user']['login'];

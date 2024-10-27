@@ -9,7 +9,6 @@
 	</head>
 	<?php include "inc/header.php"; ?>
 	<body>
-
 <?php
 	include "./mysql_cli.php";
 	require "./reg_class.php";
@@ -21,7 +20,9 @@
         array("name_f" => "login", "type" => "text", "name" => "Login"),
         array("name_f" => "password", "type" => "password", "name" => "Password"),
 		array("name_f" => "password_check", "type" => "password", "name" => "Password"),
+		array("name_f" => "phone", "type" => "tel", "name" => "Phone"),
 		array("name_f" => "email", "type" => "email", "name" => "Mail")
+		
 );
 	
 	echo 
@@ -44,7 +45,6 @@
 		
 		$i++;
     }
-	
 	echo 
 		"<tr>
          <td><button type=\"submit\">Registration</button></td>

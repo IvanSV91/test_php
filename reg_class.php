@@ -4,6 +4,7 @@ class UserRegistration {
 	public $name;
 	public $login;
 	public $email;
+	public $phone;
 	public $password;
 	public $password_check;
 	public $hashPassword;
@@ -11,6 +12,7 @@ class UserRegistration {
 	public $nameErr = "";
 	public $loginErr = "";
 	public $emailErr = "";
+	public $phoneErr = "";
 	public $passErr = "";
 
 	public function __construct($data) {
@@ -18,6 +20,7 @@ class UserRegistration {
 			$this->name = $this->sanitizeInput($data["user_name"]);
 			$this->login = $this->sanitizeInput($data["login"]);
 			$this->email = $data["email"];
+			$this->phone = $data["phone"];
 			$this->password = $data["password"];
 			$this->password_check = $data["password_check"];
 			$this->validate();
@@ -37,7 +40,11 @@ class UserRegistration {
 		{
 				echo "<p style=\"color: red\">" . $this->emailErr ." </p>";
 		}
-    	if(!empty($this->passErr))
+		if(!empty($this->phoneErr))
+		{
+        	echo "<p style=\"color: red\">" . $this->phoneErr ."</p>";
+		}
+		if(!empty($this->passErr))
     	{
         	echo "<p style=\"color: red\">" . $this->passErr ."</p>";
     	}
@@ -52,6 +59,7 @@ class UserRegistration {
 		$this->validateName();
 		$this->validateLogin();
 		$this->validateEmail();
+		$this->validatePhone();
 		$this->validatePassword();
 
 		if($this->isValid()) {
@@ -109,7 +117,22 @@ class UserRegistration {
         return true;
     }
 
+	protected function validatePhone() {
+		if(empty($this->phone)) {
+			$this->phoneErr = "Enter your phone number";
+			return false;
+		}else{
+			$sanitizedPhone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
+			
+			if (strlen($sanitizedPhone) < 10 || strlen($sanitizedPhone) > 15) {
+       	    	$this->phoneErr = "Phone number must be between 10 and 15 digits";
+            	return false;
+			}   
+		}
 		
+		return true;
+	}
+
 	protected function validatePassword() {
 		if(empty($this->password) || empty($this->password_check)) {
 			$this->passErr = "Create a password and enter it in both fields";
@@ -163,7 +186,7 @@ class UserRegistration {
 	private function registerUser() {
 		$dbReg = new UserDatabase("localhost", "root", "qwerty", "reg_users");
 		$this->hashPassword = password_hash($this->password, PASSWORD_DEFAULT);
-		$dbReg->registerUser($this->name, $this->login, $this->hashPassword, $this->email);
+		$dbReg->registerUser($this->name, $this->login, $this->hashPassword, $this->email, $this->phone);
 		header("Location: ./auth.php");
 	}
 }
