@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport content="width=device-width, initialscale=1.0">
+        <meta name="viewport" content="width=device-width, initialscale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="public/css/style.css">
         <title>profile</title>

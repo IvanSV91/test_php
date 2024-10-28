@@ -53,14 +53,14 @@
 		 </form>
    	 	 </div>
 		 <div class=\"div_error\">"; 
-		$registration->enterErrors();
+		$registration->displayErrors();
 			
 	echo	
-		"<br><br>
-        your name: " . $registration->name ."<br>
-        your login: " . $registration->login . "<br>
-        your password: " .  $registration->password . "<br>
-    	</div>";
+		//"<br><br>
+        //your name: " . $registration->name ."<br>
+        //your login: " . $registration->login . "<br>
+        //your password: " .  $registration->password . "<br>
+    	"</div>";
 
 ?>
     </body>

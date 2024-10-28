@@ -3,19 +3,29 @@
 include "./reg_class.php";
 
 class UserAuth extends UserRegistration {
-	
-	public $loginErr;
-	public $token;
+
+
+	//public $loginErr;
+	private $email;
+	private $phone;
+	private $password;
+	private $token;
+
 	public function __construct($data) {
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
-			if(isset($_POST['email'])){	
-				$this->email = $data["email"];
+				if(isset($data["email"])){	
+				$this->setEmail($data["email"]);
+				$this->email = $this->getEmail();
 			}
-			elseif(isset($_POST['phone'])) {
-				$this->phone = $data["phone"];
+			elseif(isset($data["phone"])) {
+				$this->setPhone($data["phone"]);
+				$this->phone = $this->getPhone();
 			}
 			$this->token = $data["smart-token"];
-			$this->password = $data["password"];
+			//$this->password = $data["password"];
+			$this->setPassword($data["password"]);
+			$this->password = $this->getPassword();
+			
 			$this->validate();
 			$this->login();
 		}
@@ -34,9 +44,13 @@ class UserAuth extends UserRegistration {
 				exit();
 			}	
 			else{
-				$this->loginErr =  "Invalid Email\Phone or Pasword";
+				$this->errors[] =  "Invalid Email\Phone or Pasword";
 				return false;
-				}
+	
+			}		
+		}
+		else {
+			return false;
 		}
 	}
 
@@ -48,23 +62,25 @@ class UserAuth extends UserRegistration {
 		}
 		elseif(isset($this->phone)){
 			$this->validatePhone();
-		}
+		} else {
+			$this->errors[] = "Enter email or phone";
+		}		
 	}
 	
 	protected function validatePassword(){
-		if(empty(trim($this->password)))
+		if(empty($this->password))
 		{	
-			$this->passErr = "Enter password";
+			$this->errors[] = "Enter password";
 			return false;
 		}
 		return true;
 	}
 
 	protected function captcha($token) {
-    	$ch = curl_init("https://smartcaptcha.yandexcloud.net/validate");
+		$ch = curl_init("https://smartcaptcha.yandexcloud.net/validate");
     	$args = [
         	"secret" => 'ysc2_BG9x7Tr5tDQEbQ3ZXPSCiHSDYkr0zFD6mk5Ib2x97fa06942',
-        	"token" => $this->token
+        	"token" => $token
     	];
    		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
     	curl_setopt($ch, CURLOPT_POST, true);    
@@ -81,16 +97,24 @@ class UserAuth extends UserRegistration {
     	}
  
     	$resp = json_decode($server_output);
-    	return $resp->status === "ok";
+		if($resp === null || !isset($resp->status))
+		{
+			return false;
+		}
+		elseif($resp->status === "ok"){
+				return true;
+		}
+		
 	}	
 
 
 	protected function check_captcha(){
-		echo "token is \"$this->token\"";
-	if ($this->captcha($this->token)) {
-		echo "Passed\n";
+	if ($this->captcha($this->token)) {				
+		//echo "token is \"$this->token\"";
 		return true;
 	} else {
+		//echo "token is \"$this->token\"";
+		$this->errors[] = "use captcha";	
 		return false;
 	}
 }

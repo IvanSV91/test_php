@@ -19,7 +19,6 @@
 	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$edit = new editUserProfile($_POST);
-	//	$edit->editUserData();
 	}
 ?>
 <!DOCTYPE html>
@@ -47,8 +46,8 @@
             <td><input type="password" name="password" id="password"></td>
 			</tr>
 			<tr>
-			<td class="table_td_name"><label for="password_check">New Password:</label></td>
-            <td><input type="password" name="password_check" id="password_check"></td>
+			<td class="table_td_name"><label for="passwordCheck">New Password:</label></td>
+            <td><input type="password" name="passwordCheck" id="passwordCheck"></td>
 			<td><button type="submit">change</button></td>
 			</tr>
 			<tr>
@@ -57,7 +56,13 @@
 			<td><button type="submit">change</button></td>   
 			</tr>
 			<tr>
-			<td><?php $edit->enterErrors(); $edit->enterMessage(); ?></td>
+            <td class="table_td_name"><label for="phone">New Phone:</label></td>
+            <td><input type="text" name="phone" id="phone"></td>
+			<td><button type="submit">change</button></td>   
+			</tr>
+
+			<tr>
+			<td><?php $edit->displayErrors(); $edit->enterMessage(); ?></td>
 			</tr>
         </table>
     </form>

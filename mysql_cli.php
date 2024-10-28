@@ -93,28 +93,16 @@ class UserDatabase {
 		}
 	}
 	
-	//public function editUserProfileSql($oldData, $newData, $key)
-	//{
-	//	$sql = "UPDATE users SET `$key`='$newData' where `$key` ='$oldData'";
-		
-	//	if($this->connection->query($sql) === TRUE)
-      //  {
-        //      echo "record created";
-        //} else {
-          //   echo "Error: " .$sql . "<br>" . $this->connection->error;   
-   			//}
-	
-//	}
 
-    public function editUserDatadb($oldData, $hash, $key)
+    public function editUserDatadb($oldData, $newData, $key)
 	{
 		if($key == "password"){	
-			$hash = password_hash($hash, PASSWORD_DEFAULT);
+			$hash = password_hash($newData, PASSWORD_DEFAULT);
 		}
 
         $sql = "UPDATE users SET `$key`=? where `$key`=?";
 		$stmt = $this->connection->prepare($sql);
-        $stmt->bind_param('ss', $hash, $oldData);
+        $stmt->bind_param('ss', $newData, $oldData);
 
         $stmt->execute();
 
@@ -122,9 +110,6 @@ class UserDatabase {
 			echo "working";
 		$stmt->close();
     }
-
-
-
 
 }
 ?>

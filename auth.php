@@ -34,7 +34,7 @@
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" onsubmit="return validateInput();">
             <table>
                 <tr>   
-                    <td class="table_td_name"><label for="userInput">Email:</label></td>
+                    <td class="table_td_name"><label for="userInput">Email/Phone:</label></td>
                     <td><input type="text" id="userInput" required></td>
                 </tr>
                 <tr>
@@ -60,7 +60,7 @@
         </form>
         <div>
             <?php
-                echo $auth->enterErrors();
+                echo $auth->displayErrors();
             ?>
         </div>
     </div>

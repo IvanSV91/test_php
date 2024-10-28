@@ -1,54 +1,74 @@
 <?php
 
 class UserRegistration {
-	public $name;
-	public $login;
-	public $email;
-	public $phone;
-	public $password;
-	public $password_check;
-	public $hashPassword;
+	private $name;
+	private $login;
+	private $email;
+	private $phone;
+	private $password;
+	private $passwordCheck;
+	private $hashPassword;
 
-	public $nameErr = "";
-	public $loginErr = "";
-	public $emailErr = "";
-	public $phoneErr = "";
-	public $passErr = "";
+	protected $errors = [];
 
 	public function __construct($data) {
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
-			$this->name = $this->sanitizeInput($data["user_name"]);
-			$this->login = $this->sanitizeInput($data["login"]);
-			$this->email = $data["email"];
-			$this->phone = $data["phone"];
-			$this->password = $data["password"];
-			$this->password_check = $data["password_check"];
+				
+			$this->setName($data["user_name"]);		
+			$this->setLogin($data["login"]);		
+			$this->setEmail($data["email"]);		
+			$this->setPhone($data["phone"]);		
+			$this->setPassword($data["password"], $data["password_check"]);		
 			$this->validate();
+			
 		}
 	}
 
-	public function enterErrors(){
-		if(!empty($this->nameErr))
-    	{
-        	echo "<p style=\"color: red\">" . $this->nameErr ."</p>";
-    	}
-    	if(!empty($this->loginErr))
-    	{
-        	echo "<p style=\"color: red\">" . $this->loginErr . "</p>";
-		}
-		if(!empty($this->emailErr))
-		{
-				echo "<p style=\"color: red\">" . $this->emailErr ." </p>";
-		}
-		if(!empty($this->phoneErr))
-		{
-        	echo "<p style=\"color: red\">" . $this->phoneErr ."</p>";
-		}
-		if(!empty($this->passErr))
-    	{
-        	echo "<p style=\"color: red\">" . $this->passErr ."</p>";
-    	}
 
+	public function setName($name) {
+		$this->name = $this->sanitizeInput($name);
+	}
+
+	
+	public function setLogin($login) {
+		$this->login = $this->sanitizeInput($login);
+	}
+	
+	public function setEmail($email) {
+		$this->email = $this->sanitizeInput($email);
+	}
+
+	public function getEmail() {
+		return $this->email;
+	}
+	
+	public function setPhone($phone) {
+		$this->phone = $this->sanitizeInput($phone);
+	}
+
+	public function getPhone() {
+		return $this->phone;
+	}
+
+	public function setPasswordCheck($passwordCheck){ 
+		$this->passwordCheck = $this->sanitizeInput($passwordCheck);
+	}
+
+	public function setPassword($password) {
+		$this->password = $this->sanitizeInput($password);
+	}
+
+	public function getPassword()
+	{
+		return $this->password;
+	}
+
+
+	public function displayErrors() {
+		for($i = 0; $i < count($this->errors); $i++)
+		{
+			echo "<p style=\"color: red\">{$this->errors[$i]}</p>";
+		}
 	}
 
 	protected function sanitizeInput($data) {
@@ -69,7 +89,7 @@ class UserRegistration {
 
 	private function validateName() {
 		if(empty($this->name)) {
-			$this->nameErr = "Enter your name";
+			$this->errors[] = "Enter your name";
 			return false;
 		} else {
 				if($this->strlenCheck($this->name, 3, 32, $this->nameErr)) 
@@ -77,7 +97,7 @@ class UserRegistration {
 					return false;
 				}		
 				if(!preg_match("/^[a-zA-Z0-9]*$/", $this->name)) {
-					$this->nameErr = "Only letters and numbers are allowed";
+					$this->errors[] = "Only letters and numbers are allowed";
 					return false;	
 			}
 		}
@@ -86,17 +106,15 @@ class UserRegistration {
 	
 	protected function validateLogin() {
 
-		echo "function ValidateLogin handle $this->login <br>";
-		
 		if(empty($this->login)) {
-			$this->loginErr = "Enter your login";
+			$this->errors[] = "Enter your login";
 			return false;
 		} else {
 				if (!$this->strlenCheck($this->login, 3, 32, $this->loginErr)) {	
 						return false;
 				}
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $this->login)) {
-				$this->loginErr = "Only letters and numbers are allowed for login";
+				$this->errors[] = "Only letters and numbers are allowed for login";
 				return false;
 			}
 		}
@@ -106,11 +124,11 @@ class UserRegistration {
 
 	protected function validateEmail() {
         if (empty($this->email)) {
-            $this->emailErr = "Enter your email";
+            $this->errors[] = "Enter your email";
             return false;
         } else {
             if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-                $this->emailErr = "Invalid email format";
+                $this->errors[] = "Invalid email format";
                 return false;
             }
         }
@@ -119,13 +137,13 @@ class UserRegistration {
 
 	protected function validatePhone() {
 		if(empty($this->phone)) {
-			$this->phoneErr = "Enter your phone number";
+			$this->errors[] = "Enter your phone number";
 			return false;
 		}else{
 			$sanitizedPhone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
 			
 			if (strlen($sanitizedPhone) < 10 || strlen($sanitizedPhone) > 15) {
-       	    	$this->phoneErr = "Phone number must be between 10 and 15 digits";
+       	    	$this->errors[] = "Phone number must be between 10 and 15 digits";
             	return false;
 			}   
 		}
@@ -134,45 +152,45 @@ class UserRegistration {
 	}
 
 	protected function validatePassword() {
-		if(empty($this->password) || empty($this->password_check)) {
-			$this->passErr = "Create a password and enter it in both fields";
+		if(empty($this->password) || empty($this->passwordCheck)) {
+			$this->errors[] = "Create a password and enter it in both fields";
 			return false;
 		}
-		elseif(strcmp($this->password, $this->password_check)){
-			$this->passErr = "The passwords entered in both passwords fields should match";
+		elseif($this->password !== $this->passwordCheck){
+			$this->errors[] = "The passwords entered in both passwords fields should match";
 			return false;
 		}
-		elseif (!$this->validatePasswordComplexity($this->password, 8, 32, $this->passErr)) {
+		elseif (!$this->validatePasswordComplexity($this->password, 8, 32)) {
 			return false;
 		}
 		return true;	
 	}
 
-	private function validatePasswordComplexity($password, $min_count, $max_count, &$error) {
+	private function validatePasswordComplexity($password, $min_count, $max_count) {
 		$length = strlen($password);
     	if ($length < $min_count || $length > $max_count) {
-        	$error = "Password must be between $min_count and $max_count characters";
+        	$this->errors[] = "Password must be between $min_count and $max_count characters";
        		 return false;
     	}
 
     	if (!preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[\W]/", $password)) {
-        	$error = "Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character";
+        	$this->errors[] = "Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character";
         	return false;
     	}
 
     	return true;
 	}
 
-	private function strlenCheck($data, $min_count, $max_count, &$error) {
+	private function strlenCheck($data, $min_count, $max_count) {
 		$length = strlen($data);
 		
 		if($length < $min_count) {
-			$error = "A minimum of " . $min_count . " symbols is required";
+			$this->errors[] = "A minimum of " . $min_count . " symbols is required";
             return false;
         }
 
        if ($length > $max_count) {
-           $error = "A maximum of " . $max_count . " symbols is required.";
+           $this->errors[] = "A maximum of " . $max_count . " symbols is required.";
        	   return false;
         }
 
@@ -180,7 +198,7 @@ class UserRegistration {
    }
 
 	private function isValid() {
-			return empty($this->nameErr) && empty($this->loginErr) && empty($this->passErr) && empty($this->emailErr);
+	return empty($this->errors);
 	}
 
 	private function registerUser() {
