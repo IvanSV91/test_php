@@ -15,10 +15,12 @@
 	if(isset($_POST["exit"])) {
     setcookie("user_id", $_COOKIE["user_id"], time() - 180 * 10, "/");
 	header("Location: ./index.php");
+	exit();
 	}
 	if(isset($_POST["edit"])) {
     	header("Location: ./edit.php");
-   	}
+		exit();
+	}
 
 
 

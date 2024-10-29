@@ -14,6 +14,21 @@ class UserDatabase {
 	}
 
 	public function registerUser($name, $login, $hashPassword, $email, $phone) {
+			
+	    $checkSql = "SELECT COUNT(*) FROM `users` WHERE `email` = ? OR `phone` = ?";
+    if ($checkStmt = $this->connection->prepare($checkSql)) {
+        $checkStmt->bind_param("ss", $email, $phone);
+        $checkStmt->execute();
+        $checkStmt->bind_result($count);
+        $checkStmt->fetch();
+        $checkStmt->close();
+
+        if ($count > 0) {
+            throw new Exception("email or phone already exists");
+		}
+	}
+
+
 		$sql = "INSERT INTO `users` (`name`, `login`, `password`, `email`, `phone`) Values (?, ?, ?, ?, ?)";
 
 		if($stmt = $this->connection->prepare($sql))
@@ -21,16 +36,14 @@ class UserDatabase {
 			$stmt->bind_param("sssss", $name, $login, $hashPassword, $email, $phone);
 			
 			if(!$stmt->execute()){
-				echo "something wrong";
 				$stmt->close();
-				return false;
+				throw new Exception("something went wrong");		
 			}
 			$stmt->close();
 			return true;
 		}else {
-			echo "something wrong";
 			$stmt->close();
-			return false;	
+			throw new Exception("something went wrong");		
 		}
 	}
 
@@ -66,9 +79,8 @@ class UserDatabase {
 		if($stmt = $this->connection->prepare($sql)) {
 			$stmt->bind_param("s", $user_id);
 			if(!$stmt->execute()){
-				echo "Something wrong:";
 				$stmt->close();
-				return false;
+				throw new Exception("something went wrong");		
 			}
 		
 
@@ -82,14 +94,12 @@ class UserDatabase {
 				return true;
 			}
 			else {
-				echo "something went wrong";
 				$stmt->close();
-				return false;
+				throw new Exception("something went wrong");		
 			}
 		}else {
-			echo "smth went wrong";
 			$stmt->close();
-			return false;
+			throw new Exception("something went wrong");		
 		}
 	}
 	
@@ -107,7 +117,6 @@ class UserDatabase {
         $stmt->execute();
 
         $result = $stmt->get_result();
-			echo "working";
 		$stmt->close();
     }
 

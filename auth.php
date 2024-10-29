@@ -41,7 +41,7 @@
                     <td class="table_td_name"><label for="password">Password:</label></td>
                     <td><input type="password" name="password" id="password" required></td>
 				</tr>         
-	<tr><td>
+	<tr><td colspan="2">
 	<div
   	style="height: 100px"
   	id="captcha-container"
@@ -49,6 +49,7 @@
   	data-sitekey="ysc1_BG9x7Tr5tDQEbQ3ZXPSCw5OrNAez5ehnwVK89I7Fcea15308">
 	<input type="hidden" name="smart-token" value="token">
 	</div>
+	</td>
 </div>
 </div>
 	</td></tr>
@@ -56,9 +57,9 @@
                     <td><button type="submit">Login</button></td>
                     <td><a href="reg.php">Registration</a></td>
                 </tr>
-            </table>   
+			</table>   
         </form>
-        <div>
+        <div style="text-align: center">
             <?php
                 echo $auth->displayErrors();
             ?>

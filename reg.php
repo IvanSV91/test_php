@@ -19,7 +19,7 @@
         array("name_f" => "user_name", "type" => "text", "name" => "Name"),
         array("name_f" => "login", "type" => "text", "name" => "Login"),
         array("name_f" => "password", "type" => "password", "name" => "Password"),
-		array("name_f" => "password_check", "type" => "password", "name" => "Password"),
+		array("name_f" => "passwordCheck", "type" => "password", "name" => "Password"),
 		array("name_f" => "phone", "type" => "tel", "name" => "Phone"),
 		array("name_f" => "email", "type" => "email", "name" => "Mail")
 		

@@ -6,16 +6,13 @@
 	
 	if(isset($_COOKIE["user_id"])) {
 		$user_id = $_COOKIE["user_id"];
+	}else{
+		header("Location: ./auth.php");
+		exit();
 	}
 	
 	$user = new UserDatabase("localhost", "root", "qwerty", "reg_users");
 	$user->setUserSession($user_id);
-	//echo "<br>session start correctly<br>";
-	//echo $_SESSION['user']['user_id'];
-	//echo $_SESSION['user']['name'];
-	//echo $_SESSION['user']['login'];
-	//echo $_SESSION['user']['email'];
-	//echo $_SESSION['user']['password'];
 	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$edit = new editUserProfile($_POST);

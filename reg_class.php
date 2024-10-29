@@ -1,5 +1,6 @@
 <?php
 
+
 class UserRegistration {
 	private $name;
 	private $login;
@@ -8,9 +9,9 @@ class UserRegistration {
 	private $password;
 	private $passwordCheck;
 	private $hashPassword;
-
 	protected $errors = [];
-
+	public $err;
+	
 	public function __construct($data) {
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
 				
@@ -18,7 +19,8 @@ class UserRegistration {
 			$this->setLogin($data["login"]);		
 			$this->setEmail($data["email"]);		
 			$this->setPhone($data["phone"]);		
-			$this->setPassword($data["password"], $data["password_check"]);		
+			$this->setPassword($data["password"]);		
+			$this->setPasswordCheck($data["passwordCheck"]);
 			$this->validate();
 			
 		}
@@ -202,10 +204,18 @@ class UserRegistration {
 	}
 
 	private function registerUser() {
+			
 		$dbReg = new UserDatabase("localhost", "root", "qwerty", "reg_users");
 		$this->hashPassword = password_hash($this->password, PASSWORD_DEFAULT);
-		$dbReg->registerUser($this->name, $this->login, $this->hashPassword, $this->email, $this->phone);
+		
+		try{
+			if($dbReg->registerUser($this->name, $this->login, $this->hashPassword, $this->email, $this->phone)) {
 		header("Location: ./auth.php");
+		exit();}	
+		}
+		catch (Exception $err) {
+			$this->errors[] = $err->getMessage();
+		}
 	}
 }
 

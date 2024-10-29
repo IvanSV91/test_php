@@ -8,7 +8,9 @@ header {
   }
  
 .menu {
-    width: 300px;
+  	border-spacing: 50px 8px;
+	border-collapse: separate; 
+	width: 300px;
     margin: auto;
 }
 .menu_button {
@@ -17,7 +19,7 @@ header {
 	background-color: transparent;
 	text-decoration: none;
     font-size: 14px;
-    color: rgb(182, 180, 180);
+	color: rgb(182, 180, 180);
 	cursor: pointer;
 }
 
