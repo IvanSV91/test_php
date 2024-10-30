@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include "mysql_cli.php";
+	include __DIR__ . "/classes/mysql_cli.php";
 	if(!empty($_COOKIE["user_id"])){
 		$userSession = new UserDatabase("localhost", "root", "qwerty", "reg_users");
 		$userSession->setUserSession($_COOKIE["user_id"]);
@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="public/css/style.css">
         <title>profile</title>
     </head>
-    <?php include "inc/header.php"; ?>
+    <?php include __DIR__ . "/inc/header.php"; ?>
     <body>
 <h1>Profile</h1>
 <?php

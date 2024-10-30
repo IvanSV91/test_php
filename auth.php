@@ -9,10 +9,10 @@
 	<script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
 	<script src="public/js/script.js" defer></script>
 </head>
-<?php include "inc/header.php"; ?>
-<?php include "./mysql_cli.php"; ?>
-<?php include "./auth_class.php"; 
-    $auth = new UserAuth($_POST); ?>
+<?php include __DIR__ . "/inc/header.php"; ?>
+<?php include __DIR__ . "/classes/mysql_cli.php"; ?>
+<?php include __DIR__ . "/classes/auth_class.php"; 
+		$auth = new UserAuth($_POST); ?>
 <body>
 	<div class="div_table">
         <h1 style="text-align: center">Login</h1>

@@ -1,6 +1,6 @@
 <?php
 
-include "./reg_class.php";
+require "reg_class.php";
 
 class UserAuth extends UserRegistration {
 
@@ -108,10 +108,8 @@ class UserAuth extends UserRegistration {
 
 	protected function check_captcha(){
 	if ($this->captcha($this->token)) {				
-		//echo "token is \"$this->token\"";
 		return true;
 	} else {
-		//echo "token is \"$this->token\"";
 		$this->errors[] = "use captcha";	
 		return false;
 	}

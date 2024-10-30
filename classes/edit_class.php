@@ -1,5 +1,5 @@
 <?php 
-	include "./reg_class.php";
+	require "reg_class.php";
 
 	class editUserProfile extends UserRegistration {
 

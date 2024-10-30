@@ -1,8 +1,8 @@
 <?php 
 	session_start();
 	
-	include "./mysql_cli.php";
-	include "./edit_class.php";
+	include __DIR__ . "/classes/mysql_cli.php";
+	include __DIR__ . "/classes/edit_class.php";
 	if(!isset($_SESSION["user"]["name"]))
 	{
 		header("Location: ./auth.php");
@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="public/css/style.css">
         <title>edit profile</title>
     </head>
-	<?php include "inc/header.php"; ?>
+	<?php include __DIR__ . "/inc/header.php"; ?>
 	<body>
 		<div class="div_table">
         <h1 style="text-align: center">Edit Profile</h1>

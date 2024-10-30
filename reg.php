@@ -7,17 +7,17 @@
         <link rel="stylesheet" href="public/css/style.css">
         <title>registration</title>
 	</head>
-	<?php include "inc/header.php"; ?>
+	<?php include __DIR__ . "/inc/header.php"; ?>
 	<body>
 <?php
-	include "./mysql_cli.php";
-	require "./reg_class.php";
+	include __DIR__ . "/classes/mysql_cli.php";
+	include __DIR__ . "/classes/reg_class.php";
 
 	$registration = new UserRegistration($_POST);
 
 ?>
 	<div class="div_tabe">
-		<form action=" <?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post";>
+		<form action=" <?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 			<h1 style="text-align: center">Registration</h1>
 			<table>
 				<tr>
@@ -51,7 +51,7 @@
          </form>
 	</div>
     <div class="div_error">
-		<?php $registration->displayErrors() ?>;
+		<?php $registration->displayErrors(); ?>
 	</div>
 
     </body>
