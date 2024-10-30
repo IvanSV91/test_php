@@ -89,13 +89,13 @@ class UserRegistration {
 		}
 	}
 
-	private function validateName() {
+	protected function validateName() {
 		if(empty($this->name)) {
 			$this->errors[] = "Enter your name";
 			return false;
 		} else {
-				if($this->strlenCheck($this->name, 3, 32, $this->nameErr)) 
-				{
+				if(!$this->strlenCheck($this->name, 3, 32)) 
+				{	
 					return false;
 				}		
 				if(!preg_match("/^[a-zA-Z0-9]*$/", $this->name)) {
@@ -112,7 +112,7 @@ class UserRegistration {
 			$this->errors[] = "Enter your login";
 			return false;
 		} else {
-				if (!$this->strlenCheck($this->login, 3, 32, $this->loginErr)) {	
+				if (!$this->strlenCheck($this->login, 3, 32)) {	
 						return false;
 				}
 			if (!preg_match("/^[a-zA-Z0-9]*$/", $this->login)) {

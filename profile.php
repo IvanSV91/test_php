@@ -1,3 +1,15 @@
+<?php
+	session_start();
+	include "mysql_cli.php";
+	if(!empty($_COOKIE["user_id"])){
+		$userSession = new UserDatabase("localhost", "root", "qwerty", "reg_users");
+		$userSession->setUserSession($_COOKIE["user_id"]);
+	}else{
+		session_destroy();
+		header("Location: /index.php");
+		exit();
+	}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,21 +26,20 @@
 	echo "your id is:" . $_COOKIE["user_id"];
 	if(isset($_POST["exit"])) {
     setcookie("user_id", $_COOKIE["user_id"], time() - 180 * 10, "/");
+	session_destroy();
 	header("Location: ./index.php");
 	exit();
 	}
 	if(isset($_POST["edit"])) {
-    	header("Location: ./edit.php");
+		$_SESSION["user"]["name"] = $_SESSION["user"]["name"];	
+		header("Location: ./edit.php");
 		exit();
 	}
-
-
-
 ?>	
 	<div>
-	<p>your name</p>
-	<p>your Email</p>
-	<p>Phone number</p>	
+	<p><?php echo "your name is " . $_SESSION["user"]["name"]; ?></p>
+	<p><?php echo "your Email is " . $_SESSION["user"]["email"]; ?></p>
+	<p><?php echo "phone number is " . $_SESSION["user"]["phone"];?></p>	
 	<form method="post">
         <button type="submit" name="edit">Edit Profile</button>
     </form>

@@ -1,18 +1,23 @@
 <?php 
 	session_start();
-
+	
 	include "./mysql_cli.php";
 	include "./edit_class.php";
-	
-	if(isset($_COOKIE["user_id"])) {
-		$user_id = $_COOKIE["user_id"];
-	}else{
-		header("Location: ./auth.php");
+	if(!isset($_SESSION["user"]["name"]))
+	{
+		header("Location: ./reg.php");
 		exit();
 	}
+
+//	if(isset($_COOKIE["user_id"])) {
+//		$user_id = $_COOKIE["user_id"];
+//	}else{
+//		header("Location: ./auth.php");
+//		exit();
+//	}
 	
 	$user = new UserDatabase("localhost", "root", "qwerty", "reg_users");
-	$user->setUserSession($user_id);
+//	$user->setUserSession($user_id);
 	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$edit = new editUserProfile($_POST);
@@ -53,6 +58,11 @@
 			<td><button type="submit">change</button></td>   
 			</tr>
 			<tr>
+            <td class="table_td_name"><label for="name">New Name:</label></td>
+            <td><input type="text" name="name" id="name"></td>
+			<td><button type="submit">change</button></td>   
+			</tr>
+			<tr>		
             <td class="table_td_name"><label for="phone">New Phone:</label></td>
             <td><input type="text" name="phone" id="phone"></td>
 			<td><button type="submit">change</button></td>   

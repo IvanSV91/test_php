@@ -5,7 +5,7 @@
 
 		private $oldData;
 		private $newData;
-		private $keys = ["login", "password", "passwordCheck", "email", "phone"];
+		private $keys = ["name", "login", "password", "passwordCheck", "email", "phone"];
 		private $key;	
 		private $message;
 		private $passwordCheck;
@@ -56,6 +56,9 @@
 			if($this->key == "phone") {
 				$this->validatePhone();
 			}
+			if($this->key == "name"){
+					$this->validateName();
+			}
 		}
 
 		protected function validateLogin(){
@@ -68,7 +71,18 @@
 				return false;
 	        }
 		}
-
+		
+		protected function validateName(){
+			$this->setName($this->newData); 
+	        if(parent::validateName()){
+			$this->message = $this->key;
+			$this->editUserData();
+   			return true;
+			}else{
+				return false;
+	        }
+		}
+		
 		protected function validateEmail(){
 			$this->setEmail($this->newData);
 			if(parent::validateEmail()) {
