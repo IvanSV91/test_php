@@ -15,7 +15,7 @@ class UserRegistration {
 	public function __construct($data) {
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
 				
-			$this->setName($data["user_name"]);		
+			$this->setName($data["userName"]);		
 			$this->setLogin($data["login"]);		
 			$this->setEmail($data["email"]);		
 			$this->setPhone($data["phone"]);		

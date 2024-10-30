@@ -107,7 +107,7 @@ class UserDatabase {
     public function editUserDatadb($oldData, $newData, $key)
 	{
 		if($key == "password"){	
-			$hash = password_hash($newData, PASSWORD_DEFAULT);
+			$newData = password_hash($newData, PASSWORD_DEFAULT);
 		}
 
         $sql = "UPDATE users SET `$key`=? where `$key`=?";

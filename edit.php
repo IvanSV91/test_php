@@ -5,19 +5,11 @@
 	include "./edit_class.php";
 	if(!isset($_SESSION["user"]["name"]))
 	{
-		header("Location: ./reg.php");
+		header("Location: ./auth.php");
 		exit();
 	}
 
-//	if(isset($_COOKIE["user_id"])) {
-//		$user_id = $_COOKIE["user_id"];
-//	}else{
-//		header("Location: ./auth.php");
-//		exit();
-//	}
-	
 	$user = new UserDatabase("localhost", "root", "qwerty", "reg_users");
-//	$user->setUserSession($user_id);
 	
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$edit = new editUserProfile($_POST);
@@ -27,7 +19,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport content="width=device-width, initialscale=1.0">
+        <meta name="viewport" content="width=device-width, initialscale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="public/css/style.css">
         <title>edit profile</title>

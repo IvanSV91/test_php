@@ -31,7 +31,6 @@
 	exit();
 	}
 	if(isset($_POST["edit"])) {
-		$_SESSION["user"]["name"] = $_SESSION["user"]["name"];	
 		header("Location: ./edit.php");
 		exit();
 	}

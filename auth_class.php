@@ -5,7 +5,6 @@ include "./reg_class.php";
 class UserAuth extends UserRegistration {
 
 
-	//public $loginErr;
 	private $email;
 	private $phone;
 	private $password;
@@ -22,7 +21,6 @@ class UserAuth extends UserRegistration {
 				$this->phone = $this->getPhone();
 			}
 			$this->token = $data["smart-token"];
-			//$this->password = $data["password"];
 			$this->setPassword($data["password"]);
 			$this->password = $this->getPassword();
 			

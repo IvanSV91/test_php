@@ -31,12 +31,12 @@
 			{
 				if(!empty($data[$this->keys[$i]]) && $this->keys[$i] != "passwordCheck")
 				{	
-					$this->oldData = $this->sanitizeInput($_SESSION['user'][$this->keys[$i]]);
-					$this->newData = $this->sanitizeInput($data[$this->keys[$i]]);
+					$this->oldData = $_SESSION['user'][$this->keys[$i]];
+					$this->newData = $data[$this->keys[$i]];
 					$this->key = $this->keys[$i];
 				}
 				elseif($this->keys[$i] == "passwordCheck"){
-					$this->passwordCheck = $this->sanitizeInput($data[$this->keys[$i]]);
+					$this->passwordCheck = $data[$this->keys[$i]];
 				}
 			} 
 		}	
